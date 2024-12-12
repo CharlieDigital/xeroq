@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.002.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "xeroq-signaling", "signaling\xeroq-signaling.csproj", "{A89919DB-79FE-41BA-9DE5-C236C27D9037}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A89919DB-79FE-41BA-9DE5-C236C27D9037}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A89919DB-79FE-41BA-9DE5-C236C27D9037}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A89919DB-79FE-41BA-9DE5-C236C27D9037}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A89919DB-79FE-41BA-9DE5-C236C27D9037}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {363FECC4-6A3A-4242-9501-E586C807FE26}
+	EndGlobalSection
+EndGlobal
