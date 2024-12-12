@@ -6,7 +6,49 @@ Xeroq aims to solve this by providing a serverless, peer-to-peer, WebRTC based s
 
 Xeroq does this by directly connecting the two sides using WebRTC and then using a data channel to pass the information between them.
 
-## Setup
+## Terminology
+
+|Term|Definition|
+|--|--|
+|**Initiator**|The side where the user initiates the session; where the form is.|
+|**Capture**|The side where the user will perform the actual capture.|
+|**Offer**|This is the configuration data for the initiator that we need to transmit to the capture side.|
+|**Answer**|This is the configuration data for the capture side that we need to transmit to the initiator.|
+|**SignalR**|This is a Microsoft ASP.NET runtime component that provides a brokered web socket channel.  We use this channel to send the signaling data between the two sides to connect them.|
+
+## Local Dev
+
+For local development, follow these steps:
+
+In **window 1**, we start the .NET 9 backend which provides a web socket server (via SignalR) to allow capture side to transmit an "answer" to the initiator.
+
+```bash
+cd signaling
+dotnet run                            # Start the signaling server
+```
+
+In **window 2**, we build (TODO: add `watch`) the main JavaScript library:
+
+```bash
+cd packages/xeroq
+pnpm run build                        # Build the package
+```
+
+In **window 3**, we can start the demo app.
+
+```bash
+cd demo
+pnpm run dev                          # Run the demo app
+```
+
+You will need to use a combination of VS Code dev tunnels and ngrok or just ngrok to expose the local application.
+
+Dev tunnels do not correctly upgrade the web socket connections for SignalR so ngrok is a better choice.
+
+```bash
+ngrok http 5081                       # Start ngrok for the backend signaling server
+ngrok http 5173                       # Start ngrok for the demo page
+```
 
 ## Resources
 
