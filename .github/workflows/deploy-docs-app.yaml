@@ -1,0 +1,35 @@
+name: "Deploy Docs App"
+
+on:
+  push:
+    branches: ["main"]
+    paths: [docs/**.*]
+
+  workflow_dispatch:
+
+jobs:
+  deploy-app:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Cache
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          cache: "pnpm"
+          cache-dependency-path: pnpm-lock.yaml
+
+      - name: Build Docs App
+        run: |
+          pushd docs
+          pnpm build
+          popd
+
+      - name: Deploy Hosting and Firebase Rules
+        uses: w9jds/firebase-action@v13.23.0
+        with:
+          args: deploy --only hosting
+        env:
+          GCP_SA_KEY: ${{ secrets.GCP_CREDENTIALS_JSON }}

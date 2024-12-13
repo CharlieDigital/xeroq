@@ -10,6 +10,13 @@ export default defineConfig({
 			social: {
 				github: 'https://github.com/CharlieDigital/xeroq',
 			},
+			head: [{
+				tag: 'script',
+				attrs: {
+					src: '/analytics.js',
+					defer: true
+				}
+			}],
 			sidebar: [
 				{
 					label: 'Guides',
