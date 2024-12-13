@@ -16,11 +16,21 @@ Xeroq does this by directly connecting the two sides using WebRTC and then using
 |**Answer**|This is the configuration data for the capture side that we need to transmit to the initiator.|
 |**SignalR**|This is a Microsoft ASP.NET runtime component that provides a brokered web socket channel.  We use this channel to send the signaling data between the two sides to connect them.|
 
+## What Happens
+
+1. At startup, the initiator generates a session ID and encodes it into a QR code.
+2. The initiator also starts a connection to a SignalR server to register the session
+3. From another device ("capture side"), the user scans the QR code to connect to the session via SignalR
+4. Via SignalR, the capture side sends a "ready" signal to the initiator
+5. The initiator generates a WebRTC "offer" and transmits this to the capture side via SignalR
+6. The capture side receives this "offer" and generates an "answer" which is transmitted to the initiator via SignalR
+7. Both sides now connect directly via WebRTC and disconnect from SignalR
+
 ## Local Dev
 
 For local development, follow these steps:
 
-In **window 1**, we start the .NET 9 backend which provides a web socket server (via SignalR) to allow capture side to transmit an "answer" to the initiator.
+In **window 1**, we start the .NET 9 backend which provides a web socket server (via SignalR) to allow the capture side to transmit an "answer" to the initiator.
 
 ```bash
 cd signaling
