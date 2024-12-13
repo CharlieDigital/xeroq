@@ -34,6 +34,6 @@ jobs:
       - name: Deploy Hosting and Firebase Rules
         uses: w9jds/firebase-action@v13.23.0
         with:
-          args: deploy --only hosting
+          args: deploy --only hosting --message \"${{ github.event.head_commit.message }}\"
         env:
           GCP_SA_KEY: ${{ secrets.GCP_CREDENTIALS_JSON }}
