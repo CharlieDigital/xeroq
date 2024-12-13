@@ -9,36 +9,10 @@ import { HubConnectionBuilder } from "@microsoft/signalr";
  * initiating side.
  */
 export function useXeroqCapture(
-  compressedOffer: string,
   sessionId: string,
   options: XeroqCaptureOptions
 ) {
-  const peer = new SimplePeer()
-
-  peer.on('error', err => console.error('[Xeroq error]', err))
-
-  const decompressed = decompressFromEncodedURIComponent(compressedOffer)
-
-  peer.on('signal', async data => {
-    // This gets triggered when we call `signal()` below after connecting to
-    // SignalR.  We ant to connect SignalR first because we need to send the
-    // "answer" to the incoming "offer" to the initiator.
-    const jsonData = JSON.stringify(data)
-    const compressedAnswer = compressToEncodedURIComponent(jsonData)
-
-    // Here we send the signal with the answer
-    await signalConnection.invoke("signal", sessionId, compressedAnswer);
-    await signalConnection.stop()
-  });
-
-  // This capture side is connected to the initiator and we can send.
-  peer.on('connect', () => {
-    if (options?.connectFn) {
-      options.connectFn(sessionId);
-    }
-
-    peer.send("HELLO, WORLD FROM YOUR PEER");
-  })
+  let peer: SimplePeer.Instance
 
   // Sender for the "answer" from this endpoint.
   const signalConnection = new HubConnectionBuilder()
@@ -48,11 +22,44 @@ export function useXeroqCapture(
   // Start and join to the session
   signalConnection
     .start()
-    .then(() => {
+    .then(async () => {
         console.log("Initiating sync...");
-        signalConnection.invoke("sync", sessionId)
+        await signalConnection.invoke("sync", sessionId, true)
         // Wait for this connection before we signal.
-        peer.signal(decompressed);
+        //peer.signal(decompressed);
       }
     );
+
+  // This payload contains the offer from the initiator.
+  signalConnection.on("signalCapture", compressedOffer => {
+    peer = new SimplePeer()
+
+    peer.on('error', err => console.error('[Xeroq error]', err))
+
+    const decompressedOffer = decompressFromEncodedURIComponent(compressedOffer)
+
+    peer.on('signal', async data => {
+      // This gets triggered when we call `signal()` below after connecting to
+      // SignalR.  We ant to connect SignalR first because we need to send the
+      // "answer" to the incoming "offer" to the initiator.
+      const jsonData = JSON.stringify(data)
+      const compressedAnswer = compressToEncodedURIComponent(jsonData)
+
+      // Here we send the signal with the answer
+      await signalConnection.invoke("signalInitiator", sessionId, compressedAnswer);
+    });
+
+    // This capture side is connected to the initiator and we can send.
+    peer.on('connect', async () => {
+      if (options?.connectFn) {
+        options.connectFn(sessionId);
+      }
+
+      peer.send("HELLO, WORLD FROM YOUR PEER");
+
+      await signalConnection.stop()
+    })
+
+    peer.signal(decompressedOffer)
+  })
 }

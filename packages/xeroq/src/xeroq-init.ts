@@ -8,16 +8,52 @@ import { HubConnectionBuilder } from '@microsoft/signalr';
 /**
  * Creates the initiator of the P2P WebRTC channel.
  */
-export function useXeroq(options: XeroqOptions) {
+export async function useXeroq(options: XeroqOptions) {
+  let peer: SimplePeer.Instance
+
+  // Generate the URL and QR code for the session.
   const sessionId = options.idConfig?.explicitId ?? makeId(options.idConfig?.length)
+  const url = `${options.interfaceUrl}?sessionId=${sessionId}`
+  options.readyFn?.(await QRCode.toDataURL(sessionId), sessionId, url);
 
   // Receiver for the "answer" from the capture endpoint.
   const signalConnection = new HubConnectionBuilder()
     .withUrl(options.signalingServer, { withCredentials: false })
     .build();
 
+  // This is the signal when the capture side has connected; now
+  // we can start the exchange.
+  signalConnection.on("signalStart", () => {
+    peer = new SimplePeer({
+      initiator: options.initiator,
+      trickle: false
+    })
+
+    peer.on('error', err => console.error('[Xeroq error]', err))
+
+    // This is the outgoing "offer" that needs to be consumed on the incoming side.
+    peer.on('signal', async data => {
+      const jsonData = JSON.stringify(data)
+      const compressedOffer = compressToEncodedURIComponent(jsonData)
+
+      // Send the offer via SignalR
+      await signalConnection.send("signalCapture", sessionId, compressedOffer)
+    })
+
+    // Connected with a remote peer.
+    peer.on('connect', async () => {
+      console.log("[Xeroq connected]")
+      await signalConnection.stop()
+    })
+
+    // Received data on the data channel.
+    peer.on('data', data => {
+      console.debug("[Xeroq data]", data)
+    })
+  });
+
   // This is the payload from the capture endpoint.
-  signalConnection.on("signal", data => {
+  signalConnection.on("signalInitiator", data => {
     const decompressedAnswer = decompressFromEncodedURIComponent(data);
     peer.signal(decompressedAnswer)
   });
@@ -27,34 +63,7 @@ export function useXeroq(options: XeroqOptions) {
     .start()
     .then(() => {
         console.log("Initiating sync...");
-        signalConnection.invoke("sync", sessionId)
+        signalConnection.invoke("sync", sessionId, false)
       }
     );
-
-  const peer = new SimplePeer({
-    initiator: options.initiator,
-    trickle: false
-  })
-
-  peer.on('error', err => console.error('[Xeroq error]', err))
-
-  // This is the outgoing "offer" that needs to be consumed on the incoming side.
-  peer.on('signal', async data => {
-    const jsonData = JSON.stringify(data)
-    const compressedOffer = compressToEncodedURIComponent(jsonData)
-    const url = `${options.interfaceUrl}?offer=${compressedOffer}&offerId=${sessionId}`
-
-    options.readyFn?.(await QRCode.toDataURL(url), sessionId, url);
-  })
-
-  // Connected with a remote peer.
-  peer.on('connect', async () => {
-    console.log("[Xeroq connected]")
-    await signalConnection.stop()
-  })
-
-  // Received data on the data channel.
-  peer.on('data', data => {
-    console.debug("[Xeroq data]", data)
-  })
 }

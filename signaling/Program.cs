@@ -34,13 +34,28 @@ class SignalingHub : Hub {
     /// </summary>
     /// <param name="session">The session ID</param>
     /// <param name="payload">The payload (signal data) from the capture side.</param>
-    public async Task Signal(string session, string payload) =>
-        await Clients.Group(session).SendAsync("signal", payload);
+    public async Task SignalInitiator(string session, string payload) =>
+        await Clients.Group(session).SendAsync("signalInitiator", payload);
+
+    /// <summary>
+    /// Sends the signal from the initiator to the capture endpoint.
+    /// </summary>
+    /// <param name="session">The session ID</param>
+    /// <param name="payload">The payload (signal data) from the capture side.</param>
+    public async Task SignalCapture(string session, string payload) =>
+        await Clients.Group(session).SendAsync("signalCapture", payload);
 
     /// <summary>
     /// Initiates a session from either side (initiator and capture side).
     /// </summary>
     /// <param name="session">The session ID.</param>
-    public async Task Sync(string session) =>
+    /// <param name="ready">True when invoked from the capture side</param>
+    public async Task Sync(string session, bool ready) {
         await Groups.AddToGroupAsync(Context.ConnectionId, session);
+
+        if (ready) {
+            // This should be handled by the initiator to start the peer
+            await Clients.Group(session).SendAsync("signalStart");
+        }
+    }
 }

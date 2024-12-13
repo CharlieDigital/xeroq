@@ -16,18 +16,18 @@ const signalingServer = "https://d526-173-72-7-44.ngrok-free.app/xeroq-hub";
 
 const params = new URLSearchParams(window.location.search)
 
-if (params.has("offer")) {
+if (params.has("sessionId")) {
   renderCapture();
 } else {
-  renderInitator();
+  renderInitiator();
 }
 
 /**
  * Render the components to initiate the session.
  */
-function renderInitator() {
+function renderInitiator() {
   $divById("container")!.innerHTML = `
-    <img width="400" height="400" src="" id="qr" />
+    <img width="120" height="120" src="" id="qr" />
     <br/>
     <a id="url" href="">Session URL</a>
   `
@@ -49,20 +49,14 @@ function renderInitator() {
 function renderCapture() {
   console.log("Rendering capture...")
 
-  const offer = params.get("offer");
-  const offerId = params.get("offerId")
+  const sessionId = params.get("sessionId")
 
-  if (!offer) {
-    console.error("No offer")
+  if (!sessionId) {
+    console.error("No sessionId")
     return;
   }
 
-  if (!offerId) {
-    console.error("No offerId")
-    return;
-  }
-
-  useXeroqCapture(offer, offerId, {
+  useXeroqCapture(sessionId, {
     signalingServer,
     connectFn: (s) => {
       $divById("container").innerHTML = `
