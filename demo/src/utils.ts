@@ -9,3 +9,10 @@ export function $$id<T extends HTMLElement>(id: string) {
 export function $divById(id: string) {
   return $id<HTMLDivElement>(id);
 }
+
+export function $click(id: string, handler: () => void) {
+  document.getElementById(id)!.onclick = handler
+}
+
+export const interfaceUrl = import.meta.env.VITE_INTERFACE_URL;
+export const signalingServer = import.meta.env.VITE_SIGNALING_SERVER_URL;

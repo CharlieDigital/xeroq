@@ -8,7 +8,7 @@ import { HubConnectionBuilder } from "@microsoft/signalr";
  * responsible for capturing the image and streaming it to the
  * initiating side.
  */
-export function useXeroqCapture(
+export function xeroqCapture(
   sessionId: string,
   options: XeroqCaptureOptions
 ) {
@@ -25,8 +25,6 @@ export function useXeroqCapture(
     .then(async () => {
         console.log("Initiating sync...");
         await signalConnection.invoke("sync", sessionId, true)
-        // Wait for this connection before we signal.
-        //peer.signal(decompressed);
       }
     );
 
@@ -55,11 +53,21 @@ export function useXeroqCapture(
         options.connectFn(sessionId);
       }
 
-      peer.send("HELLO, WORLD FROM YOUR PEER");
-
-      await signalConnection.stop()
+      window.setTimeout(async () => await signalConnection.stop(), 250)
     })
 
     peer.signal(decompressedOffer)
   })
+
+  /**
+   * This function transmits the photo via WebRTC to the initiator.
+   * @param dataUrl URL encoded image format.
+   */
+  async function sendPhoto(capture: Blob) {
+    peer.send(await capture.arrayBuffer())
+  }
+
+  return {
+    sendPhoto
+  }
 }

@@ -8,7 +8,7 @@ import { HubConnectionBuilder } from '@microsoft/signalr';
 /**
  * Creates the initiator of the P2P WebRTC channel.
  */
-export async function useXeroq(options: XeroqOptions) {
+export async function xeroqInit(options: XeroqOptions) {
   let peer: SimplePeer.Instance
 
   // Generate the URL and QR code for the session.
@@ -48,7 +48,7 @@ export async function useXeroq(options: XeroqOptions) {
 
     // Received data on the data channel.
     peer.on('data', data => {
-      console.debug("[Xeroq data]", data)
+      options.photoReceivedFn?.(data)
     })
   });
 

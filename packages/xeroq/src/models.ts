@@ -19,11 +19,17 @@ export type XeroqOptions = {
    */
   idConfig?: XeroqIdConfig,
   /**
-   * A function that has a single string parameter `qrCodeDataUrl` that contains
-   * a data URL with the WebRTC offer.  The value can be assigned to an `<img>`
-   * element to display a QR code.
+   * This function is invoked when the session is ready.
+   * @param qrCodeDataUrl The data URL encoded format of the QR code which contains the URL for the capture
+   * @param sessionId The session ID encoded in the QR code
+   * @param rawUrl The raw URL that is encoded in the QR code
    */
   readyFn?: (qrCodeDataUrl: string, sessionId: string, rawUrl: string) => void
+  /**
+   * The function invoked when a photo is received from the capture side.
+   * @param photo An `Uint8Array` which contains the photo that was snapped.
+   */
+  photoReceivedFn?: (photo: Uint8Array) => void
 }
 
 /**
