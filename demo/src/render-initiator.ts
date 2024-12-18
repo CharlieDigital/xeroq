@@ -14,7 +14,6 @@ export function renderInitiator() {
   xeroqInit({
     interfaceUrl,
     signalingServer,
-    initiator: true,
     idConfig: {
       explicitId: import.meta.env.VITE_STATIC_SESSION
     },
@@ -22,7 +21,7 @@ export function renderInitiator() {
       $id<HTMLImageElement>("qr")!.src = qr
       $id<HTMLAnchorElement>("url")!.href = url
     },
-    photoReceivedFn: handlePhoto
+    blobReceivedFn: handlePhoto
   });
 }
 

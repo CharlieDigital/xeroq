@@ -11,10 +11,6 @@ export type XeroqOptions = {
    */
   signalingServer: string,
   /**
-   * True when this is the initiator.
-   */
-  initiator: boolean,
-  /**
    * Options for the ID that is passed along to the client.
    */
   idConfig?: XeroqIdConfig,
@@ -29,7 +25,7 @@ export type XeroqOptions = {
    * The function invoked when a photo is received from the capture side.
    * @param photo An `Uint8Array` which contains the photo that was snapped.
    */
-  photoReceivedFn?: (photo: Uint8Array) => void
+  blobReceivedFn?: (photo: Uint8Array) => void
 }
 
 /**

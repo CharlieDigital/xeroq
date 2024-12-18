@@ -25,7 +25,7 @@ export async function xeroqInit(options: XeroqOptions) {
   // we can start the exchange.
   signalConnection.on("signalStart", () => {
     peer = new SimplePeer({
-      initiator: options.initiator,
+      initiator: true,
       trickle: false
     })
 
@@ -48,7 +48,7 @@ export async function xeroqInit(options: XeroqOptions) {
 
     // Received data on the data channel.
     peer.on('data', data => {
-      options.photoReceivedFn?.(data)
+      options.blobReceivedFn?.(data)
     })
   });
 

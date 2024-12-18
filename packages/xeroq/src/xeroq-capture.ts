@@ -63,11 +63,11 @@ export function xeroqCapture(
    * This function transmits the photo via WebRTC to the initiator.
    * @param dataUrl URL encoded image format.
    */
-  async function sendPhoto(capture: Blob) {
+  async function sendBlob(capture: Blob) {
     peer.send(await capture.arrayBuffer())
   }
 
   return {
-    sendPhoto
+    sendBlob
   }
 }

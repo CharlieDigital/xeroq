@@ -1,0 +1,94 @@
+---
+title: Basic Example
+description: A guide in my new Starlight docs site.
+---
+
+Xeroq always has an ***initiator side*** (where the form is) and a ***capture side*** (where the user will capture an image using a device or possibly upload a file from a remote location).
+
+## From the initiator
+
+This is how we can start the initiator side:
+
+```js
+  xeroqInit({
+    // The URL that displays the capture interface
+    interfaceUrl,
+
+    // The URL of the signaling server
+    signalingServer,
+
+    // The function to be invoked when the connection is ready
+    readyFn: (qr, id, url) => {
+      // TODO: Display the QR code or URL
+    },
+
+    // The function to receive the photo
+    blobReceivedFn: handleBlob
+  });
+```
+
+Here's a simple example of the handler function where we'll just display the photo:
+
+```js
+
+/**
+ * Invoked when a blob is received from the remote capture side.,
+ * @param photo An `ArrayBuffer` which contains the received blob
+ */
+function handleBlob(photo: Uint8Array) {
+  console.log(photo)
+
+  const app = $divById("app")
+
+  const photoDataUrl = "data:image/png;base64,"
+    + arrayBufferToBase64(photo)
+
+  app.innerHTML += `
+    <br />
+    <img src="${photoDataUrl}" />
+  `
+
+  // TODO: Add a hidden input to upload it
+}
+
+// https://stackoverflow.com/a/9458996/116051
+function arrayBufferToBase64( buffer: ArrayBuffer ) {
+  var binary = '';
+  var bytes = new Uint8Array( buffer );
+  var len = bytes.byteLength;
+  for (var i = 0; i < len; i++) {
+      binary += String.fromCharCode( bytes[ i ] );
+  }
+  return window.btoa( binary );
+}
+```
+
+You can do anything you want with the photo like sending it for extraction, additional processing, etc.
+
+## From the remote device
+
+Here's a basic example of implementing the capture side of the flow:
+
+```js
+const sessionId = params.get("sessionId")
+
+const xeroq = xeroqCapture(sessionId, {
+  signalingServer,
+  connectFn: (sid) => {
+    // TODO: Connected! Enable buttons, etc.
+  }
+```
+
+That's it!
+
+You can let the user capture a photo or select a file to upload; the actual user interface is entirely up to you.
+
+Once the user takes a photo or selects a file, we'll transmit it to the initiator:
+
+```js
+// blob is a Uint8Array which contains the binary contents
+// of the file
+await xeroq.sendBlob(blob)
+```
+
+Yes.  That's it.  That's all there is to it.

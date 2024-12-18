@@ -84,7 +84,7 @@ export function renderCapture() {
 
       // const data = canvas.toDataURL("image/png");
       canvas.toBlob(async blob => {
-        if (blob) await xeroq.sendPhoto(blob)
+        if (blob) await xeroq.sendBlob(blob)
       }, "image/png", 0.8)
 
       evt.preventDefault()
