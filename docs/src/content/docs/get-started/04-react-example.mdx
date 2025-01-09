@@ -1,0 +1,18 @@
+---
+title: React Example
+description: An example of how to use Xeroq in React
+---
+import { INTERFACE_URL, SIGNALING_SERVER } from '../../../environment'
+import XeroqInitiator from '../../../components/react/xeroq-initiator.tsx'
+
+This example shows Xeroq initiator in action as a React component.
+
+Use your device to scan the QR code and the photos will load to the left.
+
+<XeroqInitiator
+  signalingServer={SIGNALING_SERVER}
+  interfaceUrl={INTERFACE_URL}
+  client:only="react"
+/>
+
+View the source for this example in the Github repo.

@@ -1,0 +1,88 @@
+import { useCallback, useEffect, useState } from 'react'
+import styles from './xeroq-initiator.module.css'
+import { xeroqInit } from 'xeroq';
+import { STATIC_SESSION } from '../../environment';
+import { arrayBufferToBase64 } from '../utils';
+
+export type XeroqCaptureProps = {
+  interfaceUrl: string,
+  signalingServer: string,
+  isLocalDev: boolean
+}
+
+const isLocalDev = import.meta.env.SSR
+  ? false
+  : window.location.hostname === "localhost";
+
+/**
+ * Sample React functional component for the capture
+ */
+export default function XeroqCapture (
+  { interfaceUrl, signalingServer } : XeroqCaptureProps
+) {
+  const [captureUrl, setCaptureUrl] = useState<string | null>(null)
+  const [photos, setPhotos] = useState<string[]>([])
+  const [qrCode, setQrCode] = useState<string | null>(null)
+
+  useEffect(() => {
+    xeroqInit({
+      // The URL that displays the capture interface
+      interfaceUrl: `${interfaceUrl.replace(/\/$/, "")}/reference/capture-example/`,
+
+      // The URL of the signaling server
+      signalingServer: signalingServer,
+
+      // Use a static ID for local dev
+      idConfig: isLocalDev ? {
+        explicitId: STATIC_SESSION
+      } : undefined,
+
+      // The function to be invoked when the connection is ready
+      readyFn: (qr, id, url) => {
+        setQrCode(qr)
+        setCaptureUrl(url)
+      },
+
+      // The function to receive the photo
+      blobReceivedFn: (photo: Uint8Array): void => {
+        const photoDataUrl = "data:image/png;base64," + arrayBufferToBase64(photo)
+
+        setPhotos(prev => [...prev, photoDataUrl])
+      }
+    });
+  }, [])
+
+  return (
+    <div className={styles.wrapper}>
+      <div className={styles.container}>
+        <div style={{flex: '1 1'}}>
+          {
+            photos.map((url) => (
+              <img
+                src={url}
+                key={url}
+                className={styles.photo}
+              />)
+            )
+          }
+        </div>
+        <div style={{flex: '0 1', textAlign: 'right', minWidth: '120px', marginTop: '0px !important'}}>
+          {
+            qrCode ? (
+              <img
+                src={qrCode}
+                style={{width: '120px', height: '120px'}}
+              />
+            ) : (
+              <></>
+            )
+          }
+
+        </div>
+      </div>
+      <div style={{ borderTop: '1px solid var(--sl-color-gray-5)', padding: '8px', textAlign: 'center' }}>
+        <a href={captureUrl ?? ""} target="_blank">{ captureUrl }</a>
+      </div>
+    </div>
+  )
+}

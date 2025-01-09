@@ -1,0 +1,18 @@
+---
+title: Vue Example
+description: An example of how to use Xeroq in a Vue SFC
+---
+import { INTERFACE_URL, SIGNALING_SERVER } from '../../../environment'
+import XeroqInitiator from '../../../components/vue/xeroq-initiator.vue'
+
+This example shows Xeroq initiator in action as a Vue component.
+
+Use your device to scan the QR code and the photos will load to the left.
+
+<XeroqInitiator
+  interface-url={INTERFACE_URL}
+  signaling-server={SIGNALING_SERVER}
+  client:only
+/>
+
+View the source for this example in the Github repo.

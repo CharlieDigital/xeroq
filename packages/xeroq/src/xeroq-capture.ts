@@ -1,6 +1,6 @@
 import { compressToEncodedURIComponent, decompressFromEncodedURIComponent } from "lz-string";
 import SimplePeer from "simple-peer";
-import { XeroqCaptureOptions } from "./models";
+import { XeroqCapture, XeroqCaptureOptions } from "./models";
 import { HubConnectionBuilder } from "@microsoft/signalr";
 
 /**
@@ -11,7 +11,7 @@ import { HubConnectionBuilder } from "@microsoft/signalr";
 export function xeroqCapture(
   sessionId: string,
   options: XeroqCaptureOptions
-) {
+) : XeroqCapture{
   let peer: SimplePeer.Instance
 
   // Sender for the "answer" from this endpoint.

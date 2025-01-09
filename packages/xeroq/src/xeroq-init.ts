@@ -14,7 +14,7 @@ export async function xeroqInit(options: XeroqOptions) {
   // Generate the URL and QR code for the session.
   const sessionId = options.idConfig?.explicitId ?? makeId(options.idConfig?.length)
   const url = `${options.interfaceUrl}?sessionId=${sessionId}`
-  options.readyFn?.(await QRCode.toDataURL(sessionId), sessionId, url);
+  options.readyFn?.(await QRCode.toDataURL(url), sessionId, url);
 
   // Receiver for the "answer" from the capture endpoint.
   const signalConnection = new HubConnectionBuilder()

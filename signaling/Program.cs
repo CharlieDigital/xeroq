@@ -4,6 +4,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddSignalR();
 
+// TODO: Parameterize the origins to ENV and DEV
 builder.Services.AddCors(config =>
     config.AddPolicy("signaling", policy =>
         policy

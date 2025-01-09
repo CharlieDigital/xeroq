@@ -1,0 +1,21 @@
+---
+title: Capture Example
+description: This page is a sample capture page.
+---
+
+import { SIGNALING_SERVER } from '../../../environment'
+import XeroqCapture from '../../../components/vue/xeroq-capture.vue'
+
+This page is an example implementation of a capture endpoint.  When you scan the QR code, you will be redirected here to actually perform the capture.
+
+Go to the [Vue example](../get-started/03-vue-example.mdx) to initiate the flow.
+
+## Capture Component
+
+<XeroqCapture
+  signaling-server={SIGNALING_SERVER}
+  client:only/>
+
+## Learn More
+
+To learn more about how to implement this yourself, see [the Mozilla docs on media capture](https://developer.mozilla.org/en-US/docs/Web/API/Media_Capture_and_Streams_API/Taking_still_photos) that the capture code is taken from.

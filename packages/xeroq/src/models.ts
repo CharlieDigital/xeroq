@@ -1,4 +1,15 @@
 /**
+ * Interface type for the capture component.
+ */
+export type XeroqCapture = {
+  /**
+   * Sends the blob from the remote capture side to the initiating side.
+   * @param capture The blob that was captured via the media capture API
+   */
+  sendBlob: (capture: Blob) => Promise<void>
+}
+
+/**
  * Configuration options for Xeroq.
  */
 export type XeroqOptions = {
