@@ -33,6 +33,10 @@ app.Urls.Add($"http://0.0.0.0:{port}");
 
 app.UseCors(isDevelopment ? "local" : "live");
 
+app.MapGet('/health', () => {
+    return DateTime.Now.ToString()
+});
+
 app.MapHub<SignalingHub>("/xeroq-hub");
 
 app.Run();
