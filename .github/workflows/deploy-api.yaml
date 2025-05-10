@@ -19,8 +19,11 @@ jobs:
         with:
           credentials_json: ${{ secrets.GCP_CREDENTIALS_JSON }}
 
+      - uses: google-github-actions/setup-gcloud@v1
+
       - name: Build Signaling API
         run: |
+          gcloud auth configure-docker
           docker buildx build \
             --push \
             --platform linux/amd64 \
