@@ -20,7 +20,7 @@ jobs:
           credentials_json: ${{ secrets.GCP_CREDENTIALS_JSON }}
 
       - name: Build Signaling API
-        run: docker build \
+        run: docker buildx build \
           --push \
           --platform linux/amd64 \
           -t us-east4-docker.pkg.dev/xeroq-app/xeroq-docker/xeroq-signaling \
