@@ -33,7 +33,7 @@ app.Urls.Add($"http://0.0.0.0:{port}");
 
 app.UseCors(isDevelopment ? "local" : "live");
 
-app.MapGet('/health', () => {
+app.MapGet("/health", () => {
     return DateTime.Now.ToString()
 });
 
