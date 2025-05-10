@@ -4,23 +4,34 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddSignalR();
 
-// TODO: Parameterize the origins to ENV and DEV
-builder.Services.AddCors(config =>
-    config.AddPolicy("signaling", policy =>
-        policy
-        .AllowAnyOrigin()
-        .AllowAnyHeader()
-        .AllowAnyMethod()
-    )
-);
+builder.Services.AddCors(config => {
+    config.AddPolicy("local", policy =>
+            policy
+                .AllowAnyOrigin()
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+        );
+
+    config.AddPolicy("live", policy =>
+            policy
+                .WithOrigins([
+                    "https://xeroq.chrlschn.dev"
+                ])
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+        );
+});
 
 var app = builder.Build();
 
-var port = builder.Environment.IsDevelopment() ? 5081 : 8080;
+var isDevelopment = builder.Environment.IsDevelopment();
+
+// Expose 8080 when upstream (5081 locally).
+var port = isDevelopment ? 5081 : 8080;
 
 app.Urls.Add($"http://0.0.0.0:{port}");
 
-app.UseCors("signaling");
+app.UseCors(isDevelopment ? "local" : "live");
 
 app.MapHub<SignalingHub>("/xeroq-hub");
 

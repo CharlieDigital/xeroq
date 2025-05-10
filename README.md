@@ -66,6 +66,14 @@ ngrok http 5081                       # Start ngrok for the backend signaling se
 ngrok http 5173                       # Start ngrok for the demo page
 ```
 
+## Building the Container
+
+To build the container for the backend:
+
+```bash
+docker buildx build -t xeroq/signaling -f ./Dockerfile .
+```
+
 ## Resources
 
 - [simple-peer](https://github.com/feross/simple-peer)
