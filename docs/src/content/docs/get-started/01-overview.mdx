@@ -32,17 +32,17 @@ Here's a high level overview of the flow and how the two sides connect.
 
 ![](../../../../public/img/xeroq-flow.png)
 
-1. At startup, the initiator generates a session ID and encodes it into a QR code.
-2. The initiator also starts a connection to a SignalR server to register the session
-3. From another device ("capture side"), the user scans the QR code
-4. This initiates a connection to the signaling server via SignalR on the same session
-5. The initiator is notified that the capture side has connected and generates and offer
-6. The initiator transmits the offer to the capture side via the signaling server
-7. The capture side receives this offer
-8. The capture side generates an answer to the initiator and disconnects from the signaling server
-9. The initiator receives the answer and disconnects from the signaling server
-10. The two sides connect peer-to-peer via WebRTC using the offer and answer
-11. The capture side transmits images to the initiator
+1. At startup, the **initiator** generates a **session ID** and encodes it into a QR code.
+2. The **initiator** also starts a **connection** to a SignalR server to register the **session**
+3. From another device ("**capture side**"), the user scans the QR code
+4. This initiates a connection to the **signaling server** via SignalR on the same session
+5. The **initiator** is notified that the capture side has connected and generates an **offer**
+6. The **initiator** transmits the offer to the capture side via the **signaling server**
+7. The **capture side** receives this **offer**
+8. The **capture side** generates an **answer** to the **initiator** and disconnects from the **signaling server**
+9. The initiator receives the answer and disconnects from the **signaling server**
+10. The two sides connect peer-to-peer via WebRTC using the **offer** and **answer**
+11. The **capture side** transmits images to the **initiator**
 
 ## Terminology
 

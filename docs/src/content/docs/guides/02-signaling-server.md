@@ -66,19 +66,19 @@ SignalR protocol negotiation does not work correctly with Google Cloud Run with 
 
 ### Google Cloud Compute Engine
 
-TODO
+TODO ([Create an issue](https://github.com/CharlieDigital/xeroq/issues))
 
 ### AWS Elastic Container Service (via Copilot)
 
-TODO
+TODO ([Create an issue](https://github.com/CharlieDigital/xeroq/issues))
 
 ### AWS EC2
 
-TODO
+TODO ([Create an issue](https://github.com/CharlieDigital/xeroq/issues))
 
 ### Azure Container Apps
 
-TODO
+TODO ([Create an issue](https://github.com/CharlieDigital/xeroq/issues))
 
 ## Scaling your signaling server
 

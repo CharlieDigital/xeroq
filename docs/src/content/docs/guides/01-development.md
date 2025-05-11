@@ -44,15 +44,15 @@ Here, you'll need to place the two proxy URLs:
 
 ```ini
 # This is the URL assigned by dev tunnels; it is typically "static"
-VITE_INTERFACE_URL=https://4gch11f2-5173.use.devtunnels.ms/
+PUBLIC_INTERFACE_URL=https://4gch11f2-5173.use.devtunnels.ms/
 
 # This is the URL assigned by ngrok; if you do not have a paid
 # account, this is dynamic
-VITE_SIGNALING_SERVER_URL=https://c4b8-173-70-232-221.ngrok-free.app/xeroq-hub
+PUBLIC_SIGNALING_SERVER_URL=https://c4b8-173-70-232-221.ngrok-free.app/xeroq-hub
 
 # This is a static session ID to use for testing so that when the
 # page refreshes, it regenerates the same session (typically random)
-VITE_STATIC_SESSION=TEST_SESSION
+PUBLIC_STATIC_SESSION=TEST_SESSION
 ```
 
 :::caution
