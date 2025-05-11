@@ -9,7 +9,7 @@ We use SignalR (an abstraction layer over web sockets) here as the code is compa
 
 The initiator side connects first and sets the client supplied session ID.  Once the session ID is transferred to the remote capture side, it also connects to the signaling server and both sides use the signaling server to exchange the "offer" and "answer" via SignalR before disconnecting and switching to peer-to-peer WebRTC mode.
 
-## Deploying your own signaling server
+## Deploying Your Own Signaling Server
 
 The signaling server is easy to deploy as a container to serverless container runtimes that support web sockets like Google Cloud Run (**recommended**).
 
@@ -53,7 +53,7 @@ gcloud run deploy xeroq-signaling \
   --region=us-east4 \
   --cpu-boost \
   --cpu=1 \
-  --memory=2Gi \
+  --memory=1Gi \
   --concurrency=250 \
   --project=xeroq-app \
   --set-env-vars=DOTNET_SYSTEM_NET_HTTP_SOCKETSHTTPHANDLER_HTTP3SUPPORT=false
@@ -80,7 +80,7 @@ TODO ([Create an issue](https://github.com/CharlieDigital/xeroq/issues))
 
 TODO ([Create an issue](https://github.com/CharlieDigital/xeroq/issues))
 
-## Scaling your signaling server
+## Scaling Your Signaling Server
 
 Google Cloud Run supports a maximum of 1000 concurrent connections per instance.  Even though it supports sticky sessions, it does not offer a guarantee that if a user initiates a session on one instance, that they will connect the remote capture side to the same instance.
 

@@ -20,7 +20,7 @@ Go to the [Vue example](/get-started/03-vue-example) to initiate the flow.
 
 To learn more about how to implement this yourself, see [the Mozilla docs on media capture](https://developer.mozilla.org/en-US/docs/Web/API/Media_Capture_and_Streams_API/Taking_still_photos) that the capture code is taken from.
 
-## Sample Vue implementation
+## Sample Vue Implementation
 
 [The reference implementation in Vue is available in the repo](https://github.com/CharlieDigital/xeroq/blob/main/docs/src/components/vue/xeroq-capture.vue).
 
@@ -138,4 +138,38 @@ function handleShutterClick() {
   }, "image/png", 0.8)
 }
 </script>
+```
+
+## Useful Utility Functions
+
+The following function may be useful as it allows converting the incoming binary buffer into a data URL:
+
+```ts
+/**
+ * Invoked when a photo is received from the remote capture side.,
+ * @param photo An `ArrayBuffer` which contains the received photo
+ */
+function handlePhoto(photo: Uint8Array) {
+  console.log(photo)
+
+  const app = $divById("app")
+
+  const photoDataUrl = "data:image/png;base64," + arrayBufferToBase64(photo)
+
+  app.innerHTML += `
+    <br />
+    <img src="${photoDataUrl}" />
+  `
+}
+
+// https://stackoverflow.com/a/9458996/116051
+function arrayBufferToBase64( buffer: ArrayBuffer ) {
+  var binary = '';
+  var bytes = new Uint8Array( buffer );
+  var len = bytes.byteLength;
+  for (var i = 0; i < len; i++) {
+      binary += String.fromCharCode( bytes[ i ] );
+  }
+  return window.btoa( binary );
+}
 ```

@@ -1,3 +1,11 @@
+---
+title: Models
+description: Reference for the core data models
+---
+
+## `XeroqCapture`
+
+```ts
 /**
  * Interface type for the capture component.
  */
@@ -9,6 +17,11 @@ export type XeroqCapture = {
   sendBlob: (capture: Blob) => Promise<void>
 }
 
+```
+
+## `XeroqOptions`
+
+```ts
 /**
  * Configuration options for Xeroq.
  */
@@ -39,7 +52,11 @@ export type XeroqOptions = {
    */
   blobReceivedFn?: (photo: Uint8Array) => void
 }
+```
 
+## `XeroqIdConfig`
+
+```ts
 /**
  * Type that describes the ID options.
  */
@@ -54,7 +71,11 @@ export type XeroqIdConfig = {
    */
   length?: number
 }
+```
 
+## `XeroqCaptureOptions`
+
+```ts
 /**
  * Options for the capture end of the application.
  */
@@ -68,3 +89,5 @@ export type XeroqCaptureOptions = {
    */
   connectFn?: (sessionId: string) => void
 }
+
+```
