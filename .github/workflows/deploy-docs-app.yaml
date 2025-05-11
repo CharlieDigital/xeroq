@@ -26,6 +26,7 @@ jobs:
 
       - name: Build Docs App
         run: |
+          pnpm --filter xeroq install
           pnpm --filter xeroq build
           pnpm --filter docs install
           pnpm --filter docs build
