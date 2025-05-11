@@ -4,11 +4,12 @@
   "version": "0.0.0",
   "type": "module",
   "exports": {
-    "types": "./dist/xeroq.d.ts",
+    "import": "./src/xeroq.ts",
+    "types": "./src/xeroq.ts",
     "default": "./dist/xeroq.js"
   },
   "main": "./dist/xeroq.js",
-  "types": "./dist/xeroq.d.ts",
+  "types": "./src/xeroq.ts",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build"
