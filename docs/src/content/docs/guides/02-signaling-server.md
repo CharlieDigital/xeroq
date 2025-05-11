@@ -11,17 +11,58 @@ The initiator side connects first and sets the client supplied session ID.  Once
 
 ## Deploying your own signaling server
 
-The signaling server is easy to deploy as a container to serverless container runtimes that support web sockets like Google Cloud Run.
+The signaling server is easy to deploy as a container to serverless container runtimes that support web sockets like Google Cloud Run (**recommended**).
 
 :::caution
-Google Cloud run bills by when the container is actively serving a request.  So until both sides disconnect after the WebRTC connection is established, you will incur billing after you've consumed your free monthly grant of 180k vCPU/seconds (50 hours of active connection time).
+Google Cloud Run bills by when the container is actively serving a request.  So until both sides disconnect after the WebRTC connection is established, you will incur billing after you've consumed your free monthly grant of 180k vCPU/seconds (50 hours of active connection time).
 :::
 
 Google Cloud Run is recommended for prototyping and testing (and perfectly suitable for small production deployments!) because it is functionally free for the first 50 hours of active connection time.
 
 ### Google Cloud Run
 
-TODO
+This demo application is deployed to Google Cloud Run.
+
+[You can see the example in the GitHub repo](https://github.com/CharlieDigital/xeroq/blob/main/build-deploy-api.sh).
+
+This requires:
+
+- Activation of the Artifact Registry API
+- Activation of the Google Cloud Run API
+- Create a repository in Artifact Registry (`xeroq-docker` in this case)
+
+```bash
+set -e
+
+gcloud config set account your-account@your-domain.org
+
+# Build the container and push to Artifact Registry
+docker buildx build \
+  --push \
+  --platform linux/amd64 \
+  -t us-east4-docker.pkg.dev/xeroq-app/xeroq-docker/xeroq-signaling \
+  -f Dockerfile .
+
+# Deploy image
+gcloud run deploy xeroq-signaling \
+  --image=us-east4-docker.pkg.dev/xeroq-app/xeroq-docker/xeroq-signaling:latest \
+  --allow-unauthenticated \
+  --min-instances=0 \
+  --max-instances=1 \
+  --timeout=15m \
+  --region=us-east4 \
+  --cpu-boost \
+  --cpu=1 \
+  --memory=2Gi \
+  --concurrency=250 \
+  --project=xeroq-app \
+  --set-env-vars=DOTNET_SYSTEM_NET_HTTP_SOCKETSHTTPHANDLER_HTTP3SUPPORT=false
+```
+
+:::caution
+SignalR protocol negotiation does not work correctly with Google Cloud Run with HTTP/2 enabled; this is a known issue on Google Cloud Run so we only use HTTP/1.1 here.
+:::
+
 
 ### Google Cloud Compute Engine
 
