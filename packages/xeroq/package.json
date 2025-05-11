@@ -3,6 +3,10 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "exports": {
+    "types": "./dist/xeroq.d.ts",
+    "default": "./dist/xeroq.js"
+  },
   "main": "./dist/xeroq.js",
   "types": "./dist/xeroq.d.ts",
   "scripts": {
