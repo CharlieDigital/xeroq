@@ -13,13 +13,13 @@
     "@types/nanoid-dictionary": "^4.2.3",
     "@types/node": "^22.10.2",
     "@types/qrcode": "^1.5.5",
+    "@types/simple-peer": "^9.11.8",
     "typescript": "~5.6.2",
     "vite": "^6.0.1",
     "vite-plugin-dts": "^4.3.0"
   },
   "dependencies": {
     "@microsoft/signalr": "^8.0.7",
-    "@types/simple-peer": "^9.11.8",
     "lz-string": "^1.5.0",
     "nanoid": "^5.0.9",
     "nanoid-dictionary": "^4.3.0",

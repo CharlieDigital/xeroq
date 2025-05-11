@@ -17,8 +17,8 @@ gcloud run deploy xeroq-signaling \
   --timeout=15m \
   --region=us-east4 \
   --cpu-boost \
-  --cpu=2 \
-  --memory=2Gi \
+  --cpu=1 \
+  --memory=512MiB \
   --concurrency=250 \
   --project=xeroq-app \
   --set-env-vars=DOTNET_SYSTEM_NET_HTTP_SOCKETSHTTPHANDLER_HTTP3SUPPORT=false
