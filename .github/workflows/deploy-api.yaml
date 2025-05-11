@@ -42,6 +42,5 @@ jobs:
             --cpu=2 \
             --memory=2Gi \
             --concurrency=250 \
-            --use-http2 \
             --project=xeroq-app \
             --set-env-vars=DOTNET_SYSTEM_NET_HTTP_SOCKETSHTTPHANDLER_HTTP3SUPPORT=false

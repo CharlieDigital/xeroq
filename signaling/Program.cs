@@ -14,9 +14,10 @@ builder.Services.AddCors(config => {
 
     config.AddPolicy("live", policy =>
             policy
-                .WithOrigins([
-                    "https://xeroq.chrlschn.dev"
-                ])
+                .WithOrigins(
+                    "https://xeroq.chrlschn.dev",
+                    "https://chrlschn.dev"
+                )
                 .AllowAnyHeader()
                 .AllowAnyMethod()
         );
@@ -29,12 +30,14 @@ var isDevelopment = builder.Environment.IsDevelopment();
 // Expose 8080 when upstream (5081 locally).
 var port = isDevelopment ? 5081 : 8080;
 
+Console.WriteLine($"Starting on port: {port}");
+
 app.Urls.Add($"http://0.0.0.0:{port}");
 
 app.UseCors(isDevelopment ? "local" : "live");
 
 app.MapGet("/health", () => {
-    return DateTime.Now.ToString()
+    return DateTime.Now.ToString();
 });
 
 app.MapHub<SignalingHub>("/xeroq-hub");
