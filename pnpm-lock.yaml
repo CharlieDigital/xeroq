@@ -49,9 +49,6 @@ importers:
       '@microsoft/signalr':
         specifier: ^8.0.7
         version: 8.0.7
-      '@types/simple-peer':
-        specifier: ^9.11.8
-        version: 9.11.8
       lz-string:
         specifier: ^1.5.0
         version: 1.5.0
@@ -80,6 +77,9 @@ importers:
       '@types/qrcode':
         specifier: ^1.5.5
         version: 1.5.5
+      '@types/simple-peer':
+        specifier: ^9.11.8
+        version: 9.11.8
       typescript:
         specifier: ~5.6.2
         version: 5.6.3
